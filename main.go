@@ -17,6 +17,7 @@ import (
 func main() {
 	fileName := flag.String("f", "", "Path for the file you want to open")
 	res := flag.String("res", "", "Image height and width separated by a comma, e.g. 20,10 for a 20x10 image. Note that no spaces can be used.")
+	maxHistory := flag.Int("history", defaultMaxHistory, "Maximum number of editor states (one per user action) kept in memory for undo/redo")
 
 	flag.Parse()
 
@@ -37,7 +38,7 @@ func main() {
 				log.Fatal(err)
 			}
 		}
-		if err := NewCmdPxl(*fileName, m, saveImage).Run(); err != nil {
+		if err := NewCmdPxl(*fileName, m, saveImage, WithMaxHistory(*maxHistory)).Run(); err != nil {
 			log.Fatal(err)
 		}
 	} else {
